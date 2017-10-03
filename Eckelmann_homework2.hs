@@ -16,25 +16,49 @@ prob1 f p xs = map f (filter p xs)
 -- @type   prob2 :: Integer -> [Integer]
 -- @param  Integer
 -- @output [Integer]
--- @description: Takes an integer. If the number is negative, returns the empty list. Otherwise, it recurses down until the given number is less than 10. At that point it 
---    returns that number in a list, concatenating it with the number from the preceding calls modulo 10.
+-- @description: Takes an integer. Maps the function digitToInt on the resulting string of calling show on the given number. Then takes each character and returns their actual value.
 prob2 :: Integer -> [Integer]
 prob2 x
-  | x < 0     = []
-  | x < 10    = [x]
-  | otherwise = prob2 (x `div` 10) ++ [x `mod` 10]
+  | x < 0 = []
+prob2 x   = map digitToInt (show x)
+  where
+    digitToInt :: Char -> Integer
+    digitToInt '0' = 0
+    digitToInt '1' = 1
+    digitToInt '2' = 2
+    digitToInt '3' = 3
+    digitToInt '4' = 4
+    digitToInt '5' = 5
+    digitToInt '6' = 6
+    digitToInt '7' = 7
+    digitToInt '8' = 8
+    digitToInt '9' = 9
+
+--ANOTHER WAY OF DOING IT.
+-- @description: Takes an integer. If the number is negative, returns the empty list. Otherwise, it recurses down until the given number is less than 10. At that point it 
+--    returns that number in a list, concatenating it with the number from the preceding calls modulo 10.
+--prob2 x
+--  | x < 0     = []
+--  | x < 10    = [x]
+--  | otherwise = prob2 (x `div` 10) ++ [x `mod` 10]
+
 
 -- Function prob3
 -- @type   prob3 :: Integer -> [Integer]
 -- @param  Integer
 -- @output [Integer]
+-- @description: Just calls reverse on the results of calling prob2 on the given number.
+prob3 :: Integer -> [Integer]
+prob3 x = reverse(prob2 x)
+
+--ANOTHER WAY OF DOING IT.
 -- @description: Takes an integer. If the number is negative, returns the empty list. Otherwise, it recurses down until the given number is less than 10. At that point it 
 --    returns that number in a list, prepending it with the number from the preceding calls modulo 10.
-prob3 :: Integer -> [Integer]
-prob3 x
-  | x < 0     = []
-  | x < 10    = [x]
-  | otherwise = (x `mod` 10) : prob3 (x `div` 10)
+--prob3 x
+--  | x < 0     = []
+--  | x < 10    = [x]
+--  | otherwise = (x `mod` 10) : prob3 (x `div` 10)
+
 
 -- Function prob4
 -- @type     prob4 :: [Integer] -> [Integer]
@@ -51,15 +75,16 @@ prob4 x
   | otherwise     = (prob4 (init (init x))) ++ [(last (init x)) * 2] ++ [(last x)]
 
 -- Function prob5
--- @type   
--- @param  
--- @output
--- @description:
+-- @type    [Integer] -> Integer
+-- @param   [Integer]
+-- @output  Integer
+-- @description: Takes a list of Integers. Uses a fold left with an anonymous function to sum up the value of each numbers' digits over the list by using another 
+--    fold left that sums up the list created by prob2 of the individual digits of each number in the list. Essentially, it's summing the digits of each number, 
+--    then summing those sums.
 prob5 :: [Integer] -> Integer
 prob5 [] = 0
 prob5 xs = foldl (\acc1 x -> acc1 + (foldl (\acc2 y -> acc2 + y) 0 (prob2 x))) 0 xs
 
---prob5 xs = foldl (\acc x -> acc + x) 0 xs
 
 
 
