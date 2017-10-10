@@ -16,31 +16,12 @@ prob1 f p xs = map f (filter p xs)
 -- @type   prob2 :: Integer -> [Integer]
 -- @param  Integer
 -- @output [Integer]
--- @description: Takes an integer. Maps the function digitToInt on the resulting string of calling show on the given number. Then takes each character and returns their actual value.
-prob2 :: Integer -> [Integer]
-prob2 x
-  | x < 0 = []
-prob2 x   = map digitToInt (show x)
-  where
-    digitToInt :: Char -> Integer
-    digitToInt '0' = 0
-    digitToInt '1' = 1
-    digitToInt '2' = 2
-    digitToInt '3' = 3
-    digitToInt '4' = 4
-    digitToInt '5' = 5
-    digitToInt '6' = 6
-    digitToInt '7' = 7
-    digitToInt '8' = 8
-    digitToInt '9' = 9
-
---ANOTHER WAY OF DOING IT.
 -- @description: Takes an integer. If the number is negative, returns the empty list. Otherwise, it recurses down until the given number is less than 10. At that point it 
 --    returns that number in a list, concatenating it with the number from the preceding calls modulo 10.
---prob2 x
---  | x < 0     = []
---  | x < 10    = [x]
---  | otherwise = prob2 (x `div` 10) ++ [x `mod` 10]
+prob2 x
+  | x < 0     = []
+  | x < 10    = [x]
+  | otherwise = prob2 (x `div` 10) ++ [x `mod` 10]
 
 
 -- Function prob3
@@ -72,7 +53,7 @@ prob4 x
   | length x == 1 = x
   | length x == 2 =  ((head x) * 2) : [last x]
   | length x == 3 = (head x) : ((head(tail x)) * 2) : [last x]
-  | otherwise     = (prob4 (init (init x))) ++ [(last (init x)) * 2] ++ [(last x)]
+  | otherwise     = (prob4 ((init . init) x)) ++ [((last . init) x) * 2] ++ [(last x)]
 
 -- Function prob5
 -- @type    [Integer] -> Integer
